@@ -1,0 +1,225 @@
+import { useState } from "react";
+import ArrowIcon from "./../assets/menu/arrow.svg?react";
+import saladImage from "./../assets/menu/salad.webp";
+import sidesImage from "./../assets/menu/sides.webp";
+import appetizersImage from "./../assets/menu/appetizers.webp";
+import mainCoursesImage from "./../assets/menu/mainCourse.webp";
+import dessertsImage from "./../assets/menu/dessert.webp";
+import beveragesImage from "./../assets/menu/beverages.webp";
+
+interface MenuItem {
+  id: number;
+  name: string;
+  price: number;
+  description?: string;
+}
+
+interface MenuCategory {
+  id: number;
+  name: string;
+  items: MenuItem[];
+  img: string;
+}
+
+const menuChoices: MenuCategory[] = [
+  {
+    id: 1,
+    name: "Appetizers",
+    items: [
+      { id: 101, name: "Bruschetta", price: 8 },
+      { id: 102, name: "Stuffed Mushrooms", price: 10 },
+      { id: 103, name: "Mozzarella Sticks", price: 7 },
+      { id: 104, name: "Garlic Bread", price: 5 },
+    ],
+    img: appetizersImage,
+  },
+  {
+    id: 2,
+    name: "Main Courses",
+    items: [
+      { id: 201, name: "Grilled Salmon", price: 18 },
+      { id: 202, name: "Ribeye Steak", price: 25 },
+      { id: 203, name: "Chicken Alfredo", price: 15 },
+      { id: 204, name: "Vegetable Stir Fry", price: 12 },
+    ],
+    img: mainCoursesImage,
+  },
+  {
+    id: 3,
+    name: "Sides",
+    items: [
+      { id: 301, name: "Garlic Mashed Potatoes", price: 5 },
+      { id: 302, name: "Steamed Asparagus", price: 6 },
+      { id: 303, name: "Roasted Brussels Sprouts", price: 7 },
+      { id: 304, name: "Mac and Cheese", price: 8 },
+      { id: 305, name: "Coleslaw", price: 4 },
+    ],
+    img: sidesImage,
+  },
+  {
+    id: 4,
+    name: "Salads",
+    items: [
+      { id: 401, name: "Caesar Salad", price: 9 },
+      { id: 402, name: "Greek Salad", price: 10 },
+      { id: 403, name: "Caprese Salad", price: 11 },
+      { id: 404, name: "Garden Salad", price: 8 },
+    ],
+    img: saladImage,
+  },
+  {
+    id: 5,
+    name: "Desserts",
+    items: [
+      { id: 501, name: "Cheesecake", price: 7 },
+      { id: 502, name: "Chocolate Lava Cake", price: 8 },
+    ],
+    img: dessertsImage,
+  },
+  {
+    id: 6,
+    name: "Beverages",
+    items: [
+      { id: 601, name: "Coffee", price: 3 },
+      { id: 602, name: "Tea", price: 2 },
+      { id: 603, name: "Soda", price: 2 },
+      { id: 604, name: "Wine", price: 10 },
+      { id: 605, name: "Beer", price: 5 },
+      { id: 606, name: "Cocktail", price: 12 },
+    ],
+    img: beveragesImage,
+  },
+];
+
+const Menu = () => {
+  const [selected, setSelected] = useState<MenuCategory | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const selectItem = (category: MenuCategory | null) => {
+    if (category === null) {
+      setIsClosing(true);
+      setSelected(null);
+      setTimeout(() => setIsClosing(false), 800);
+    } else {
+      setIsClosing(false);
+      setSelected(category);
+    }
+  };
+
+  return (
+    <div className="py-28 bg-black/20">
+      <h1 className="text-4xl font-bold text-center mb-10 text-white">Menu</h1>
+
+      <div className="h-[calc(100vh-100px)] flex flex-row w-[80vw] mx-auto">
+        {/* Left: buttons column — full width by default, half width when selected */}
+        <div
+          className={`flex flex-col transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
+            selected ? "w-1/2" : "w-full"
+          }`}
+        >
+          {menuChoices.map((category) => {
+            const isSelected = selected && selected.id === category.id;
+            return (
+              <button
+                type="button"
+                key={category.id}
+                onClick={() =>
+                  selectItem(selected?.id === category.id ? null : category)
+                }
+                className={`basis-0 rounded-xl min-h-0 text-center px-6 overflow-hidden transition-all duration-300 ${isClosing ? "delay-500" : ""}
+              bg-gray-400 border-black hover:bg-black hover:shadow-md group flex justify-between items-center cursor-pointer relative
+                ${
+                  isSelected
+                    ? "grow-2 py-4 border opacity-100 bg-black" // 1. The Selected Item
+                    : selected
+                      ? "grow-0 h-0 py-0 border-0 opacity-0 pointer-events-none" // 2. The Unselected Items (Collapsed entirely)
+                      : "grow hover:grow-2 py-4 border opacity-100" // 3. The Default State (Nothing selected yet)
+                }`}
+              >
+                {/* Background image */}
+                <img
+                  src={category.img}
+                  alt={category.name}
+                  decoding="async"
+                  style={{ willChange: "opacity" }}
+                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 
+                  opacity-30 group-hover:opacity-100 ${isSelected ? "opacity-100" : ""}`}
+                />
+
+                {/* Dark gradient overlay for text readability */}
+                <div
+                  className="absolute top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 group-hover:opacity-50"
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.65) 100%)",
+                  }}
+                />
+
+                <span
+                  className={`relative z-10 text-2xl font-bold text-black ${isSelected ? "text-white" : "group-hover:text-white"} transition-colors duration-300`}
+                >
+                  ({category.items.length})
+                </span>
+
+                <h2
+                  className={`relative z-10 text-3xl font-bold tracking-wide text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
+                >
+                  {category.name}
+                </h2>
+
+                <ArrowIcon
+                  className={`relative z-10 w-auto h-8 transition-all duration-300 rotate-45 ${isSelected ? "text-white" : "group-hover:rotate-0"} text-black ${isSelected ? "" : "group-hover:text-white group-hover:drop-shadow-md"}`}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right: items panel — hidden by default, slides in when selected */}
+        <div
+          className={`relative flex flex-col justify-center gap-6 overflow-y-auto bg-neutral-900 transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
+            selected ? "w-1/2 opacity-100 px-16 py-8" : "w-0 opacity-0 px-0"
+          }`}
+        >
+          <button
+            type="button"
+            onClick={() => selectItem(null)}
+            className="absolute top-6 right-8 text-white/50 hover:text-white text-3xl transition-colors duration-200 cursor-pointer"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+
+          <h3 className="text-3xl font-bold text-white mb-4 border-b border-white/20 pb-4 whitespace-nowrap">
+            {selected?.name}
+          </h3>
+
+          <ul className="flex flex-col gap-5">
+            {selected?.items.map((item) => (
+              <li
+                key={item.id}
+                className="flex justify-between items-center text-white border-b border-white/10 pb-4"
+              >
+                <div>
+                  <p className="text-xl font-semibold whitespace-nowrap">
+                    {item.name}
+                  </p>
+                  {item.description && (
+                    <p className="text-sm text-white/50 mt-1">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+                <span className="text-lg font-bold text-white/80 ml-8">
+                  ${item.price}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Menu;
