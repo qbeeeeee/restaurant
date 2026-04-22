@@ -2,33 +2,34 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="min-h-screen bg-linear-to-b from-[#161616] via-[#323232] to-[#0a0a0a] py-28 px-6"
+      className="min-h-screen bg-linear-to-b from-[#161616] via-[#323232] to-[#0a0a0a] py-12 sm:py-16 md:py-20 lg:py-28 px-4 sm:px-6"
     >
       {/* Section Heading */}
-      <div className="text-center mb-20">
-        <p className="text-[#fe6200] uppercase tracking-[0.3em] text-sm font-semibold mb-3">
+      <div className="text-center mb-12 sm:mb-16 md:mb-20">
+        <p className="text-[#fe6200] uppercase tracking-[0.3em] text-xs sm:text-sm font-semibold mb-2 sm:mb-3">
           Get In Touch
         </p>
-        <h2 className="text-white text-5xl font-bold leading-tight">
+        <h2 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 sm:mb-5">
           Contact <span className="text-[#fe6200]">Us</span>
         </h2>
-        <p className="text-white/50 mt-5 max-w-xl mx-auto text-base leading-relaxed">
+        <p className="text-white/50 mt-3 sm:mt-5 max-w-xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed">
           Whether you're planning a romantic dinner, a family gathering, or a
           private event — we're here to make it unforgettable.
         </p>
-        <div className="mt-6 mx-auto w-16 h-0.5 bg-[#fe6200] rounded-full" />
+        <div className="mt-4 sm:mt-6 mx-auto w-12 sm:w-16 h-0.5 bg-[#fe6200] rounded-full" />
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-start">
         {/* Left — Contact Info */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
           {/* Google Maps embed */}
-          <div className="rounded-2xl overflow-hidden border border-white/10 hover:border-[#fe6200]/40 transition-colors duration-300">
+          <div className="rounded-lg md:rounded-2xl overflow-hidden border border-white/10 hover:border-[#fe6200]/40 transition-colors duration-300">
             <iframe
               title="Restaurant Location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209132438!2d-74.00601568459418!3d40.71277937933087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1656c1a6e5%3A0xe72b27f44acf1a61!2s128%20Golden%20Ave%2C%20New%20York%2C%20NY%2010001!5e0!3m2!1sen!2sus!4v1681234567890"
               width="100%"
-              height="340"
+              height="300"
+              className="min-h-64 sm:min-h-72"
               style={{ border: 0, filter: "grayscale(0.3) contrast(1.1)" }}
               allowFullScreen
               loading="lazy"
@@ -41,7 +42,7 @@ const Contact = () => {
             {
               icon: (
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 sm:w-6 h-5 sm:h-6"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.8}
@@ -65,7 +66,7 @@ const Contact = () => {
             {
               icon: (
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 sm:w-6 h-5 sm:h-6"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.8}
@@ -84,23 +85,25 @@ const Contact = () => {
           ].map(({ icon, label, value }) => (
             <div
               key={label}
-              className="flex items-start gap-5 bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm hover:border-[#fe6200]/40 transition-colors duration-300"
+              className="flex items-start gap-3 sm:gap-4 md:gap-5 bg-white/5 border border-white/10 rounded-lg md:rounded-2xl p-4 sm:p-5 md:p-6 backdrop-blur-sm hover:border-[#fe6200]/40 transition-colors duration-300"
             >
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200]">
+              <div className="shrink-0 w-10 sm:w-12 h-10 sm:h-12 rounded-lg md:rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200]">
                 {icon}
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-[#fe6200] text-xs uppercase tracking-widest font-semibold mb-1">
                   {label}
                 </p>
-                <p className="text-white/80 text-sm leading-relaxed">{value}</p>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
+                  {value}
+                </p>
               </div>
             </div>
           ))}
 
           {/* Social links */}
-          <div className="flex items-center gap-4 mt-2">
-            <p className="text-white/40 text-sm">Follow us</p>
+          <div className="flex items-center gap-3 sm:gap-4 mt-2 sm:mt-4">
+            <p className="text-white/40 text-xs sm:text-sm">Follow us</p>
             <div className="flex-1 h-px bg-white/10" />
             {["Instagram", "Facebook", "TripAdvisor"].map((s) => (
               <a
@@ -115,30 +118,30 @@ const Contact = () => {
         </div>
 
         {/* Right — Reservation CTA */}
-        <div className="bg-white/5 border border-white/10 rounded-3xl p-10 backdrop-blur-sm flex flex-col justify-between gap-10 h-full">
+        <div className="bg-white/5 border border-white/10 rounded-lg md:rounded-3xl p-6 sm:p-8 md:p-10 backdrop-blur-sm flex flex-col justify-between gap-6 sm:gap-8 md:gap-10">
           <div>
-            <p className="text-[#fe6200] uppercase tracking-[0.3em] text-xs font-semibold mb-4">
+            <p className="text-[#fe6200] uppercase tracking-[0.3em] text-xs font-semibold mb-3 sm:mb-4">
               Reservations
             </p>
-            <h3 className="text-white text-3xl font-bold leading-snug mb-5">
+            <h3 className="text-white text-2xl sm:text-3xl font-bold leading-snug mb-4 sm:mb-5">
               Ready to Reserve <br />
               <span className="text-[#fe6200]">Your Table?</span>
             </h3>
-            <p className="text-white/50 text-sm leading-relaxed max-w-sm">
+            <p className="text-white/50 text-xs sm:text-sm md:text-base leading-relaxed max-w-sm">
               We'd love to host you. Simply reach out via phone or email and our
               team will personally assist you in securing your reservation and
               accommodating any special requests.
             </p>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 sm:gap-4">
             <a
               href="tel:+12125550198"
-              className="flex items-center gap-4 bg-[#fe6200]/10 border border-[#fe6200]/30 rounded-2xl px-6 py-4 hover:bg-[#fe6200]/20 hover:border-[#fe6200]/60 transition-all duration-300 group"
+              className="flex items-center gap-3 sm:gap-4 bg-[#fe6200]/10 border border-[#fe6200]/30 rounded-lg md:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 hover:bg-[#fe6200]/20 hover:border-[#fe6200]/60 transition-all duration-300 group"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200] shrink-0">
+              <div className="w-9 sm:w-10 h-9 sm:h-10 rounded-lg md:rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200] shrink-0">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 sm:w-5 h-4 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.8}
@@ -151,11 +154,11 @@ const Contact = () => {
                   />
                 </svg>
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-[#fe6200] text-xs uppercase tracking-widest font-semibold mb-0.5">
                   Call Us
                 </p>
-                <p className="text-white text-sm font-medium group-hover:text-white transition-colors">
+                <p className="text-white text-xs sm:text-sm font-medium group-hover:text-white transition-colors">
                   +1 (212) 555-0198
                 </p>
               </div>
@@ -163,11 +166,11 @@ const Contact = () => {
 
             <a
               href="mailto:reservations@restaurant.com"
-              className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 hover:border-[#fe6200]/40 hover:bg-white/8 transition-all duration-300 group"
+              className="flex items-center gap-3 sm:gap-4 bg-white/5 border border-white/10 rounded-lg md:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 hover:border-[#fe6200]/40 hover:bg-white/8 transition-all duration-300 group"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200] shrink-0">
+              <div className="w-9 sm:w-10 h-9 sm:h-10 rounded-lg md:rounded-xl bg-[#fe6200]/10 border border-[#fe6200]/30 flex items-center justify-center text-[#fe6200] shrink-0">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 sm:w-5 h-4 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.8}
@@ -180,18 +183,18 @@ const Contact = () => {
                   />
                 </svg>
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-[#fe6200] text-xs uppercase tracking-widest font-semibold mb-0.5">
                   Email Us
                 </p>
-                <p className="text-white text-sm font-medium group-hover:text-white transition-colors">
+                <p className="text-white text-xs sm:text-sm font-medium group-hover:text-white transition-colors">
                   reservations@restaurant.com
                 </p>
               </div>
             </a>
           </div>
 
-          <div className="border-t border-white/10 pt-6">
+          <div className="border-t border-white/10 pt-4 sm:pt-6">
             <p className="text-white/30 text-xs leading-relaxed">
               We typically respond within a few hours during business hours. For
               same-day reservations, we recommend calling directly.

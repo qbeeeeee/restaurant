@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import ArrowIcon from "./../assets/menu/arrow.svg?react";
+
+gsap.registerPlugin(ScrollToPlugin);
 import saladImage from "./../assets/menu/salad.webp";
 import sidesImage from "./../assets/menu/sides.webp";
 import appetizersImage from "./../assets/menu/appetizers.webp";
@@ -94,6 +98,7 @@ const menuChoices: MenuCategory[] = [
 const Menu = () => {
   const [selected, setSelected] = useState<MenuCategory | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const menuChoicesWrapperRef = useRef<HTMLDivElement>(null);
 
   const selectItem = (category: MenuCategory | null) => {
     if (category === null) {
@@ -103,18 +108,26 @@ const Menu = () => {
     } else {
       setIsClosing(false);
       setSelected(category);
+      gsap.to(window, {
+        duration: 0.8,
+        scrollTo: { y: menuChoicesWrapperRef.current!, offsetY: 100 },
+        ease: "power2.inOut",
+      });
     }
   };
 
   return (
-    <div className="py-28 bg-black/20">
-      <h1 className="text-4xl font-bold text-center mb-10 text-white">Menu</h1>
+    <div className="py-12 sm:py-16 md:py-20 lg:py-28 bg-black/20 px-4 sm:px-6">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-10 text-white">
+        Menu
+      </h1>
 
-      <div className="h-[calc(100vh-100px)] flex flex-row w-[80vw] mx-auto">
-        {/* Left: buttons column — full width by default, half width when selected */}
+      <div className="min-h-96 sm:min-h-[600px] md:h-[calc(100vh-100px)] flex flex-col lg:flex-row w-full lg:w-[80vw] mx-auto gap-4 md:gap-0">
+        {/* Left: buttons column — full width by default, half width when selected on desktop */}
         <div
+          ref={menuChoicesWrapperRef}
           className={`flex flex-col transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
-            selected ? "w-1/2" : "w-full"
+            selected ? "w-full lg:w-1/2" : "w-full"
           }`}
         >
           {menuChoices.map((category) => {
@@ -126,14 +139,14 @@ const Menu = () => {
                 onClick={() =>
                   selectItem(selected?.id === category.id ? null : category)
                 }
-                className={`basis-0 rounded-xl min-h-0 text-center px-6 overflow-hidden transition-all duration-300 ${isClosing ? "delay-500" : ""}
+                className={`basis-0 rounded-lg md:rounded-xl min-h-0 text-center px-3 sm:px-4 md:px-6 overflow-hidden transition-all duration-300 ${isClosing ? "delay-500" : ""}
               bg-gray-400 border-black hover:bg-black hover:shadow-md group flex justify-between items-center cursor-pointer relative
                 ${
                   isSelected
-                    ? "grow-2 py-4 border opacity-100 bg-black" // 1. The Selected Item
+                    ? "grow-2 py-2 sm:py-3 md:py-4 border opacity-100 bg-black" // 1. The Selected Item
                     : selected
                       ? "grow-0 h-0 py-0 border-0 opacity-0 pointer-events-none" // 2. The Unselected Items (Collapsed entirely)
-                      : "grow hover:grow-2 py-4 border opacity-100" // 3. The Default State (Nothing selected yet)
+                      : "grow hover:grow-2 py-2 sm:py-3 md:py-4 border opacity-100 min-h-16 md:min-h-20" // 3. The Default State (Nothing selected yet)
                 }`}
               >
                 {/* Background image */}
@@ -156,19 +169,19 @@ const Menu = () => {
                 />
 
                 <span
-                  className={`relative z-10 text-2xl font-bold text-black ${isSelected ? "text-white" : "group-hover:text-white"} transition-colors duration-300`}
+                  className={`relative z-10 text-lg sm:text-xl md:text-2xl font-bold text-black ${isSelected ? "text-white" : "group-hover:text-white"} transition-colors duration-300`}
                 >
                   ({category.items.length})
                 </span>
 
                 <h2
-                  className={`relative z-10 text-3xl font-bold tracking-wide text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
+                  className={`relative z-10 text-lg sm:text-2xl md:text-3xl font-bold tracking-wide text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
                 >
                   {category.name}
                 </h2>
 
                 <ArrowIcon
-                  className={`relative z-10 w-auto h-8 transition-all duration-300 rotate-45 ${isSelected ? "text-white" : "group-hover:rotate-0"} text-black ${isSelected ? "" : "group-hover:text-white group-hover:drop-shadow-md"}`}
+                  className={`relative z-10 w-auto h-6 sm:h-7 md:h-8 transition-all duration-300 rotate-45 ${isSelected ? "text-white" : "group-hover:rotate-0"} text-black ${isSelected ? "" : "group-hover:text-white group-hover:drop-shadow-md"}`}
                 />
               </button>
             );
@@ -177,40 +190,42 @@ const Menu = () => {
 
         {/* Right: items panel — hidden by default, slides in when selected */}
         <div
-          className={`relative flex flex-col justify-center gap-6 overflow-y-auto bg-neutral-900 transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
-            selected ? "w-1/2 opacity-100 px-16 py-8" : "w-0 opacity-0 px-0"
+          className={`relative flex flex-col justify-center gap-4 sm:gap-5 md:gap-6 overflow-y-auto bg-neutral-900 rounded-lg md:rounded-none transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
+            selected
+              ? "w-full lg:w-1/2 opacity-100 px-4 sm:px-8 md:px-12 lg:px-16 py-6 md:py-8"
+              : "w-0 lg:w-0 opacity-0 px-0"
           }`}
         >
           <button
             type="button"
             onClick={() => selectItem(null)}
-            className="absolute top-6 right-8 text-white/50 hover:text-white text-3xl transition-colors duration-200 cursor-pointer"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-8 text-white/50 hover:text-white text-2xl md:text-3xl transition-colors duration-200 cursor-pointer"
             aria-label="Close"
           >
             ✕
           </button>
 
-          <h3 className="text-3xl font-bold text-white mb-4 border-b border-white/20 pb-4 whitespace-nowrap">
+          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3 md:mb-4 border-b border-white/20 pb-3 md:pb-4 whitespace-nowrap">
             {selected?.name}
           </h3>
 
-          <ul className="flex flex-col gap-5">
+          <ul className="flex flex-col gap-3 sm:gap-4 md:gap-5">
             {selected?.items.map((item) => (
               <li
                 key={item.id}
-                className="flex justify-between items-center text-white border-b border-white/10 pb-4"
+                className="flex justify-between items-start md:items-center text-white border-b border-white/10 pb-3 md:pb-4 gap-4"
               >
-                <div>
-                  <p className="text-xl font-semibold whitespace-nowrap">
+                <div className="flex-1">
+                  <p className="text-base sm:text-lg md:text-xl font-semibold">
                     {item.name}
                   </p>
                   {item.description && (
-                    <p className="text-sm text-white/50 mt-1">
+                    <p className="text-xs sm:text-sm text-white/50 mt-1">
                       {item.description}
                     </p>
                   )}
                 </div>
-                <span className="text-lg font-bold text-white/80 ml-8">
+                <span className="text-base sm:text-lg md:text-lg font-bold text-white/80 flex-shrink-0">
                   ${item.price}
                 </span>
               </li>

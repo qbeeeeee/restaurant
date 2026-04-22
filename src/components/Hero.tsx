@@ -150,8 +150,11 @@ const Hero: React.FC = () => {
   });
 
   return (
-    <div ref={container} className="h-screen relative overflow-hidden">
-      <div className="table-wrapper absolute -top-[37vh] left-1/2 -translate-x-1/2 h-[90vh] w-max">
+    <div
+      ref={container}
+      className="min-h-screen h-auto md:h-screen relative overflow-hidden py-12 md:py-0"
+    >
+      <div className="table-wrapper absolute -top-[25vh] md:-top-[37vh] left-1/2 -translate-x-1/2 h-[60vh] md:h-[90vh] w-max">
         <div className="table-intro relative h-full w-full">
           {/* Table - Top View */}
           <img
@@ -192,52 +195,57 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Dynamic Title & Description */}
-      <div className="hero-signature absolute top-[70%] left-20 transform -translate-y-1/2 flex flex-col items-start justify-center text-center">
-        <h2 className="text-7xl font-bold text-white mb-2 max-w-125 text-start">
+      {/* Mobile/Tablet Hero Image - Shows only on small screens */}
+      <div className="md:hidden w-full flex justify-center mb-6">
+        <img
+          src={activeDish.src}
+          alt={activeDish.title}
+          className="w-48 sm:w-64 h-auto object-contain"
+        />
+      </div>
+
+      {/* Dynamic Title & Description - Left Side */}
+      <div className="hero-signature absolute top-1/2 md:top-[70%] left-4 sm:left-8 md:left-20 transform -translate-y-1/2 flex flex-col items-start justify-center text-center md:text-start w-full md:w-auto md:max-w-xl">
+        <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-2 max-w-xs md:max-w-125">
           Our <span className="text-[#fe6200]">Signature</span> Creations
         </h2>
 
-        <div className="flex gap-6 mt-4">
+        <div className="flex gap-3 sm:gap-4 md:gap-6 mt-4 flex-wrap">
           <button
             onClick={() => handleRotate("prev")}
-            className="px-6 py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-sm"
+            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all"
           >
             Prev Dish
           </button>
 
           <button
             onClick={() => handleRotate("next")}
-            className="px-6 py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-sm"
+            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all"
           >
             Next Dish
           </button>
         </div>
       </div>
 
-      {/* Dynamic Title & Description */}
-      <div className="hero-title-desc absolute top-[70%] right-20 transform -translate-y-1/2 max-w-125 text-end flex flex-col items-end justify-center z-40">
-        <h2 className="text-white text-3xl font-bold mb-2">
+      {/* Dynamic Title & Description - Right Side */}
+      <div className="hero-title-desc absolute top-1/2 md:top-[70%] right-4 sm:right-8 md:right-20 transform -translate-y-1/2 max-w-xs sm:max-w-sm md:max-w-125 text-start md:text-end flex flex-col items-start md:items-end justify-center z-40">
+        <h2 className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-2">
           {activeDish.title}
         </h2>
-        <p className="text-white text-lg">{activeDish.desc}</p>
+        <p className="text-white text-xs sm:text-base md:text-lg line-clamp-4 md:line-clamp-none">
+          {activeDish.desc}
+        </p>
       </div>
 
       {/* Bottom menu */}
-      <div className="hero-bottom-nav absolute bottom-[7vh] left-1/2 -translate-x-1/2 flex gap-25 z-50">
-        <button
-          // onClick={() => handleRotate("prev")}
-          className="px-6 py-2 cursor-pointer text-sm text-white"
-        >
+      <div className="hero-bottom-nav absolute bottom-4 sm:bottom-6 md:bottom-[7vh] left-1/2 -translate-x-1/2 flex gap-3 sm:gap-6 md:gap-25 z-50 flex-wrap justify-center w-full px-4">
+        <button className="px-4 sm:px-5 md:px-6 py-2 md:py-2 cursor-pointer text-xs sm:text-sm md:text-sm text-white hover:text-[#fe6200] transition-colors">
           Menu
         </button>
-        <button className="px-10 py-2.5 rounded-xl shadow-xl bg-[#fe6200] text-white transition-colors cursor-pointer">
+        <button className="px-6 sm:px-8 md:px-10 py-2 md:py-2.5 rounded-xl shadow-xl bg-[#fe6200] text-white transition-all cursor-pointer text-xs sm:text-sm md:text-base hover:shadow-lg hover:scale-105">
           Create a reservation
         </button>
-        <button
-          // onClick={() => handleRotate("next")}
-          className="px-6 py-2 cursor-pointer text-sm text-white"
-        >
+        <button className="px-4 sm:px-5 md:px-6 py-2 md:py-2 cursor-pointer text-xs sm:text-sm md:text-sm text-white hover:text-[#fe6200] transition-colors">
           Order Now
         </button>
       </div>

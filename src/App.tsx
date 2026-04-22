@@ -9,13 +9,21 @@ const App = () => {
     <div className="bg-fixed bg-linear-to-br from-[#161616] via-[#323232] to-[#0a0a0a]">
       <Header />
 
-      <Hero />
+      <section id="hero">
+        <Hero />
+      </section>
 
-      <Menu />
+      <section id="menu">
+        <Menu />
+      </section>
 
-      <Reviews />
+      <section id="reviews">
+        <Reviews />
+      </section>
 
-      <Contact />
+      <section id="contact">
+        <Contact />
+      </section>
     </div>
   );
 };
