@@ -48,18 +48,18 @@ const menuChoices: MenuCategory[] = [
     ],
     img: mainCoursesImage,
   },
-  {
-    id: 3,
-    name: "Sides",
-    items: [
-      { id: 301, name: "Garlic Mashed Potatoes", price: 5 },
-      { id: 302, name: "Steamed Asparagus", price: 6 },
-      { id: 303, name: "Roasted Brussels Sprouts", price: 7 },
-      { id: 304, name: "Mac and Cheese", price: 8 },
-      { id: 305, name: "Coleslaw", price: 4 },
-    ],
-    img: sidesImage,
-  },
+  // {
+  //   id: 3,
+  //   name: "Sides",
+  //   items: [
+  //     { id: 301, name: "Garlic Mashed Potatoes", price: 5 },
+  //     { id: 302, name: "Steamed Asparagus", price: 6 },
+  //     { id: 303, name: "Roasted Brussels Sprouts", price: 7 },
+  //     { id: 304, name: "Mac and Cheese", price: 8 },
+  //     { id: 305, name: "Coleslaw", price: 4 },
+  //   ],
+  //   img: sidesImage,
+  // },
   {
     id: 4,
     name: "Salads",
@@ -122,7 +122,12 @@ const Menu = () => {
         Menu
       </h1>
 
-      <div className="min-h-96 sm:min-h-[600px] md:h-[calc(100vh-100px)] flex flex-col lg:flex-row w-full lg:w-[80vw] mx-auto gap-4 md:gap-0">
+      <p className="text-center text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 sm:mb-10 px-4">
+        Take a look at our freshly prepared dishes. Everything is made daily with quality ingredients to satisfy any craving.
+      </p>
+
+      <div className="min-h-96 sm:min-h-150 md:h-[calc(100vh-100px)] flex flex-col lg:flex-row 
+      w-full lg:w-[80vw] mx-auto gap-4 md:gap-0">
         {/* Left: buttons column — full width by default, half width when selected on desktop */}
         <div
           ref={menuChoicesWrapperRef}
@@ -140,13 +145,13 @@ const Menu = () => {
                   selectItem(selected?.id === category.id ? null : category)
                 }
                 className={`basis-0 rounded-lg md:rounded-xl min-h-0 text-center px-3 sm:px-4 md:px-6 overflow-hidden transition-all duration-300 ${isClosing ? "delay-500" : ""}
-              bg-gray-400 border-black hover:bg-black hover:shadow-md group flex justify-between items-center cursor-pointer relative
+              bg-gray-400 border-black hover:bg-black hover:shadow-md group flex justify-center items-center cursor-pointer relative
                 ${
                   isSelected
                     ? "grow-2 py-2 sm:py-3 md:py-4 border opacity-100 bg-black" // 1. The Selected Item
                     : selected
                       ? "grow-0 h-0 py-0 border-0 opacity-0 pointer-events-none" // 2. The Unselected Items (Collapsed entirely)
-                      : "grow hover:grow-2 py-2 sm:py-3 md:py-4 border opacity-100 min-h-16 md:min-h-20" // 3. The Default State (Nothing selected yet)
+                      : "grow hover:grow-2@ py-2 sm:py-3 md:py-4 border opacity-100 min-h-16 md:min-h-20" // 3. The Default State (Nothing selected yet)
                 }`}
               >
                 {/* Background image */}
@@ -168,21 +173,22 @@ const Menu = () => {
                   }}
                 />
 
-                <span
+                {/* <span
                   className={`relative z-10 text-lg sm:text-xl md:text-2xl font-bold text-black ${isSelected ? "text-white" : "group-hover:text-white"} transition-colors duration-300`}
                 >
                   ({category.items.length})
-                </span>
+                </span> */}
 
                 <h2
-                  className={`relative z-10 text-lg sm:text-2xl md:text-3xl font-bold tracking-wide text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
+                  className={`relative z-10 text-lg sm:text-2xl md:text-3xl font-bold tracking-wide
+                     text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
                 >
                   {category.name}
                 </h2>
 
-                <ArrowIcon
+                {/* <ArrowIcon
                   className={`relative z-10 w-auto h-6 sm:h-7 md:h-8 transition-all duration-300 rotate-45 ${isSelected ? "text-white" : "group-hover:rotate-0"} text-black ${isSelected ? "" : "group-hover:text-white group-hover:drop-shadow-md"}`}
-                />
+                /> */}
               </button>
             );
           })}
@@ -225,7 +231,7 @@ const Menu = () => {
                     </p>
                   )}
                 </div>
-                <span className="text-base sm:text-lg md:text-lg font-bold text-white/80 flex-shrink-0">
+                <span className="text-base sm:text-lg md:text-lg font-bold text-white/80 shrink-0">
                   ${item.price}
                 </span>
               </li>

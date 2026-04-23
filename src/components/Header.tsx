@@ -3,6 +3,8 @@ import restaurantLogo from "./../assets/header/restaurantLogo.svg";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
+import CrossSvg from "./../assets/header/cross.svg?react";
+import MenuSvg from "./../assets/header/menu.svg?react";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -69,10 +71,10 @@ const Header = () => {
             Home
           </button>
           <button
-            onClick={() => handleNavClick("#hero")}
+            onClick={() => handleNavClick("#about")}
             className="bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors"
           >
-            About
+            About Us
           </button>
           <button
             onClick={() => handleNavClick("#menu")}
@@ -106,15 +108,15 @@ const Header = () => {
           className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-md border border-white/30 text-white hover:border-[#fe6200] hover:text-[#fe6200] transition-colors"
         >
           {isMenuOpen ? (
-            <span className="text-2xl leading-none">&times;</span>
+            <CrossSvg className="h-6 w-6 cursor-pointer" />
           ) : (
-            <span className="text-2xl leading-none">&#9776;</span>
+            <MenuSvg className="h-6 w-6 cursor-pointer" />
           )}
         </button>
       </header>
 
       <div
-        className={`lg:hidden fixed inset-0 z-110 bg-black/65 transition-opacity duration-300 ${
+        className={`lg:hidden fixed inset-0 backdrop-blur-lg z-110 bg-black/65 transition-opacity duration-300 ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -136,38 +138,38 @@ const Header = () => {
             onClick={() => setIsMenuOpen(false)}
             className="inline-flex items-center justify-center h-11 w-11 rounded-md border border-white/30 text-white hover:border-[#fe6200] hover:text-[#fe6200] transition-colors"
           >
-            <span className="text-2xl leading-none">&times;</span>
+            <CrossSvg className="h-6 w-6 cursor-pointer" />
           </button>
         </div>
 
         <nav className="mt-16 flex flex-col gap-5 text-white text-xl w-full pr-6 pl-2">
           <button
             onClick={() => handleNavClick("#hero")}
-            className="text-left bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/10 w-full"
+            className="text-left cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/20 w-full"
           >
             Home
           </button>
           <button
             onClick={() => handleNavClick("#hero")}
-            className="text-left bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/10 w-full"
+            className="text-left cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/20 w-full"
           >
-            About
+            About Us
           </button>
           <button
             onClick={() => handleNavClick("#menu")}
-            className="text-left bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/10 w-full"
+            className="text-left cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/20 w-full"
           >
             Menu
           </button>
           <button
             onClick={() => handleNavClick("#reviews")}
-            className="text-left bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/10 w-full"
+            className="text-left cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/20 w-full"
           >
             Reviews
           </button>
           <button
             onClick={() => handleNavClick("#contact")}
-            className="text-left bg-none border-none cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/10 w-full"
+            className="text-left cursor-pointer hover:text-[#fe6200] transition-colors pb-2 border-b border-white/20 w-full"
           >
             Contact
           </button>

@@ -1,3 +1,5 @@
+
+import AboutUs from "./components/AboutUs";
 import Contact from "./components/Contact";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -11,6 +13,10 @@ const App = () => {
 
       <section id="hero">
         <Hero />
+      </section>
+
+      <section id="about">
+        <AboutUs />
       </section>
 
       <section id="menu">
