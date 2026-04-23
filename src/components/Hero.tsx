@@ -45,7 +45,12 @@ const Hero: React.FC = () => {
   const proxyRef = useRef({ angle: 0 });
   const targetAngleRef = useRef(0);
   const [activeDish, setActiveDish] = useState(dishes[0]);
-  const isMobile = window.innerWidth < 640; 
+  const isMobile = window.innerWidth < 640;
+
+  const getDishWidth = (sin: number) => {
+    const size = (isMobile ? 35 : 40) + (isMobile ? 8 : 10) * sin;
+    return `${size}${isMobile ? "vw" : "vh"}`;
+  };
 
   const { contextSafe } = useGSAP({ scope: container });
 
@@ -62,14 +67,14 @@ const Hero: React.FC = () => {
 
       // Scale and Size shift based on depth (sin)
       const scale = 0.8 + 0.15 * sin; // Scales between 0.6 (back) and 1.0 (front)
-      const width = 40 + 10 * sin;// Width between 30vh (back) and 50vh (front)
+      const width = getDishWidth(sin);
       const zIndex = Math.round(20 + 10 * sin); // zIndex between 10 and 30
 
       // Apply to DOM safely
       gsap.set(`.dish-${dish.id}`, {
         left: `${left}%`,
         top: `${top}%`,
-        width: `${width}vh`,
+        width,
         scale: scale,
         zIndex: zIndex,
         xPercent: -50,
@@ -153,9 +158,12 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={container}
-      className="min-h-screen h-auto md:h-screen relative overflow-hidden mb-18"
+      className="sm:min-h-screen h-auto sm:h-screen relative overflow-hidden mb-18"
     >
-      <div className="table-wrapper absolute -top-[50px] sm:-top-[37vh] left-1/2 transform -translate-x-1/2 h-auto sm:h-[90vh] w-[80vw] sm:w-max">
+      <div
+        className="table-wrapper absolute top-0 sm:-top-[37vh] left-1/2 transform -translate-x-1/2
+       h-auto sm:h-[90vh] w-[70vw] sm:w-max min-w-60"
+      >
         <div className="table-intro relative h-full w-full">
           {/* Table - Top View */}
           <img
@@ -173,7 +181,7 @@ const Hero: React.FC = () => {
               const left = 50 + 50 * cos;
               const top = 58 + 38 * sin;
               const scale = 0.8 + 0.2 * sin;
-              const width = 40 + 10 * sin;
+              const width = getDishWidth(sin);
               const zIndex = Math.round(20 + 10 * sin);
 
               return (
@@ -185,9 +193,10 @@ const Hero: React.FC = () => {
                   style={{
                     left: `${left}%`,
                     top: `${top}%`,
-                    width: `${width}vh`,
+                    width,
                     zIndex: zIndex,
-                    transform: `translate(-50%, -50%) scale(${scale})`, // -50% both ways to center on the coordinate
+                    // transform: `translate(-50%, -50%) scale(${scale})`, // -50% both ways to center on the coordinate
+                    transform: `scale(${scale})`,
                   }}
                 />
               );
@@ -196,22 +205,13 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile/Tablet Hero Image - Shows only on small screens */}
-      <div className="md:hidden w-full flex justify-center mb-6">
-        <img
-          src={activeDish.src}
-          alt={activeDish.title}
-          className="w-48 sm:w-64 h-auto object-contain"
-        />
-      </div>
-
       {/* Dynamic Title & Description - Left Side */}
-      <div className="hero-signature mt-70 sm:mt-0 sm:absolute sm:top-[70%] sm:left-8 md:left-20 md:transform md:-translate-y-1/2 flex flex-col items-start justify-center text-start w-full sm:w-auto sm:max-w-xl">
-        <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-2 max-w-xs md:max-w-125">
+      <div className="hero-signature mt-[100vw] px-6 sm:px-0 sm:mt-0 sm:absolute sm:top-[70%] sm:left-8 md:left-20 md:transform md:-translate-y-1/2 flex flex-col items-start justify-center text-start w-full sm:w-auto sm:max-w-xl">
+        <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white md:mb-2 max-w-xs md:max-w-125">
           Our <span className="text-[#fe6200]">Signature</span> Creations
         </h2>
 
-        <div className="flex gap-3 sm:gap-4 md:gap-6 mt-4 flex-wrap">
+        <div className="flex gap-3 sm:gap-4 md:gap-6 mt-2 sm:mt-4 flex-wrap">
           <button
             onClick={() => handleRotate("prev")}
             className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all"
@@ -229,7 +229,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Dynamic Title & Description - Right Side */}
-      <div className="hero-title-desc sm:absolute sm:top-[70%] sm:right-8 md:right-20 sm:transform sm:-translate-y-1/2 sm:max-w-sm md:max-w-125 text-start md:text-end flex flex-col items-end justify-center z-40">
+      <div className="hero-title-desc px-6 sm:px-0 mt-8 sm:mt-0 sm:absolute sm:top-[70%] sm:right-8 md:right-20 sm:transform sm:-translate-y-1/2 sm:max-w-sm md:max-w-125 text-start md:text-end flex flex-col items-end justify-center z-40">
         <h2 className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-2">
           {activeDish.title}
         </h2>
@@ -239,8 +239,10 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Bottom menu */}
-      <div className="hero-bottom-nav absolute bottom-4 sm:bottom-6 md:bottom-[7vh] left-1/2 transform -translate-x-1/2 
-      flex gap-3 sm:gap-6 md:gap-20 z-50 flex-wrap justify-center w-full">
+      <div
+        className="hero-bottom-nav mt-20 sm:mt-0 sm:absolute sm:bottom-6 md:bottom-[7vh] sm:left-1/2 sm:transform sm:-translate-x-1/2 
+      flex gap-2 sm:gap-6 md:gap-20 z-50 flex-wrap justify-center w-full"
+      >
         <button className="px-4 sm:px-5 md:px-6 py-2 md:py-2 cursor-pointer text-xs sm:text-sm md:text-sm text-white hover:text-[#fe6200] transition-colors">
           Menu
         </button>

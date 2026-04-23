@@ -2,7 +2,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="min-h-screen bg-linear-to-b from-[#161616] via-[#323232] to-[#0a0a0a] py-12 sm:py-16 md:py-20 lg:py-28 px-4 sm:px-6"
+      className="min-h-screen bg-linear-to-b from-[#161616] via-[#323232] to-[#0a0a0a] py-14 sm:py-20 lg:py-28 px-4 sm:px-6"
     >
       {/* Section Heading */}
       <div className="text-center mb-12 sm:mb-16 md:mb-20">

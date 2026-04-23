@@ -117,21 +117,24 @@ const Menu = () => {
   };
 
   return (
-    <div className="py-12 sm:py-16 md:py-20 lg:py-28 bg-black/20 px-4 sm:px-6">
+    <div className="py-14 sm:py-20 lg:py-28 bg-black/20 px-4 sm:px-6">
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-10 text-white">
         Menu
       </h1>
 
       <p className="text-center text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 sm:mb-10 px-4">
-        Take a look at our freshly prepared dishes. Everything is made daily with quality ingredients to satisfy any craving.
+        Take a look at our freshly prepared dishes. Everything is made daily
+        with quality ingredients to satisfy any craving.
       </p>
 
-      <div className="min-h-96 sm:min-h-150 md:h-[calc(100vh-100px)] flex flex-col lg:flex-row 
-      w-full lg:w-[80vw] mx-auto gap-4 md:gap-0">
+      <div
+        className="min-h-96 sm:min-h-150 md:h-[calc(100vh-100px)] flex flex-col lg:flex-row 
+      w-full lg:w-[80vw] mx-auto gap-4 md:gap-0"
+      >
         {/* Left: buttons column — full width by default, half width when selected on desktop */}
         <div
           ref={menuChoicesWrapperRef}
-          className={`flex flex-col transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
+          className={`flex flex-col transition-all duration-500 min-h-50 ${selected ? "delay-300" : "delay-0"} ${
             selected ? "w-full lg:w-1/2" : "w-full"
           }`}
         >

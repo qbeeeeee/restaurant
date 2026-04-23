@@ -89,7 +89,7 @@ const Reviews = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-14 sm:py-20 md:py-28">
+    <div className="w-full flex flex-col items-center justify-center py-14 sm:py-20 lg:py-28">
       <h1 className="text-3xl sm:text-4xl font-bold text-white">Reviews</h1>
       <p className="text-white/60 text-base sm:text-lg mt-3 max-w-md text-center">
         From our kitchen to your table, discover why our guests keep coming back
