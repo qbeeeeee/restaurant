@@ -56,7 +56,7 @@ const Header = () => {
 
       introTl.from(headerRef?.current, {
         yPercent: -100,
-        duration: 0.9,
+        duration: 1.2,
         ease: "power2.out",
       });
     },

@@ -1,39 +1,34 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-
-import table from "./../assets/table.webp";
-import dish1 from "./../assets/dishes/dish1.webp";
-import dish2 from "./../assets/dishes/dish2.webp";
-import dish3 from "./../assets/dishes/dish3.webp";
-import dish4 from "./../assets/dishes/dish3.webp";
+import { HERO_IMAGES } from "../constants/heroImages";
 
 // Front = PI/2 (90deg), Left = PI (180deg), Back = -PI/2 (-90deg), Right = 0
 const dishes = [
   {
     id: 1,
-    src: dish1,
+    src: HERO_IMAGES.dish1,
     title: "Herb-Infused Grilled Chicken",
     desc: "Organic pasture-raised chicken marinated in lemon zest and garden rosemary, wood-fired and served with a zesty garlic chimichurri.",
     baseAngle: Math.PI / 2,
   },
   {
     id: 2,
-    src: dish2,
+    src: HERO_IMAGES.dish2,
     title: "Signature Bone-In Ribeye",
     desc: "Dry-aged for 28 days and seared in cast iron with smoked sea salt, finished with a rich roasted garlic and herb compound butter.",
     baseAngle: Math.PI,
   },
   {
     id: 3,
-    src: dish3,
+    src: HERO_IMAGES.dish3,
     title: "Pan-Seared Atlantic Salmon",
     desc: "Sustainably sourced salmon with a crisp skin, drizzled with a honey-miso glaze and served over a bed of coconut-infused wild rice.",
     baseAngle: 0,
   },
   {
     id: 4,
-    src: dish4,
+    src: HERO_IMAGES.dish4,
     title: "Truffle Wild Mushroom Pasta",
     desc: "Hand-folded silk pappardelle tossed in a creamy truffle-infused sauce with sautéed porcini mushrooms and 24-month aged Parmesan.",
     baseAngle: -Math.PI / 2,
@@ -44,12 +39,16 @@ const Hero: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
   const proxyRef = useRef({ angle: 0 });
   const targetAngleRef = useRef(0);
+  const isRotatingRef = useRef(false);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
   const [activeDish, setActiveDish] = useState(dishes[0]);
+  const [isRotating, setIsRotating] = useState(false);
   const isMobile = window.innerWidth < 640;
 
   const getDishWidth = (sin: number) => {
-    const size = (isMobile ? 35 : 40) + (isMobile ? 8 : 10) * sin;
-    return `${size}${isMobile ? "vw" : "vh"}`;
+    const size = (isMobile ? 140 : 40) + (isMobile ? 20 : 10) * sin;
+    return `${size}${isMobile ? "px" : "vh"}`;
   };
 
   const { contextSafe } = useGSAP({ scope: container });
@@ -91,7 +90,7 @@ const Hero: React.FC = () => {
 
       introTl
         .from(".table-intro", {
-          yPercent: -30,
+          yPercent: isMobile ? -100 : -30,
           autoAlpha: 0,
           duration: 0.9,
           ease: "power2.out",
@@ -108,16 +107,24 @@ const Hero: React.FC = () => {
           },
           "-=0.2",
         )
-        .from(".hero-signature", {
-          y: 28,
-          autoAlpha: 0,
-          duration: 0.55,
-        })
-        .from(".hero-title-desc", {
-          y: 24,
-          autoAlpha: 0,
-          duration: 0.55,
-        })
+        .from(
+          ".hero-signature",
+          {
+            y: 28,
+            autoAlpha: 0,
+            duration: 0.55,
+          },
+          "-=0.2",
+        )
+        .from(
+          ".hero-title-desc",
+          {
+            y: 24,
+            autoAlpha: 0,
+            duration: 0.55,
+          },
+          "-=0.2",
+        )
         .from(
           ".hero-bottom-nav",
           {
@@ -131,7 +138,33 @@ const Hero: React.FC = () => {
     { scope: container },
   );
 
+  useEffect(() => {
+    if (!titleRef.current || !descRef.current) {
+      return;
+    }
+
+    gsap.fromTo(
+      [titleRef.current, descRef.current],
+      { y: 16, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        overwrite: "auto",
+      },
+    );
+  }, [activeDish.id]);
+
   const handleRotate = contextSafe((direction: "next" | "prev") => {
+    if (isRotatingRef.current) {
+      return;
+    }
+
+    isRotatingRef.current = true;
+    setIsRotating(true);
+
     const step = Math.PI / 2; // 90 degrees
 
     const newTargetAngle =
@@ -152,6 +185,10 @@ const Hero: React.FC = () => {
       duration: 0.7,
       ease: "power1.out",
       onUpdate: () => updatePositions(proxyRef.current.angle),
+      onComplete: () => {
+        isRotatingRef.current = false;
+        setIsRotating(false);
+      },
     });
   });
 
@@ -161,13 +198,13 @@ const Hero: React.FC = () => {
       className="sm:min-h-screen h-auto sm:h-screen relative overflow-hidden mb-18"
     >
       <div
-        className="table-wrapper absolute top-0 sm:-top-[37vh] left-1/2 transform -translate-x-1/2
-       h-auto sm:h-[90vh] w-[70vw] sm:w-max min-w-60"
+        className="table-wrapper absolute -top-10 sm:-top-[37vh] left-1/2 transform -translate-x-1/2
+       h-auto sm:h-[90vh] w-65 sm:w-max min-w-60"
       >
         <div className="table-intro relative h-full w-full">
           {/* Table - Top View */}
           <img
-            src={table}
+            src={HERO_IMAGES.table}
             alt="Table"
             className="h-full w-auto object-contain pointer-events-none"
           />
@@ -206,22 +243,24 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Dynamic Title & Description - Left Side */}
-      <div className="hero-signature mt-[100vw] px-6 sm:px-0 sm:mt-0 sm:absolute sm:top-[70%] sm:left-8 md:left-20 md:transform md:-translate-y-1/2 flex flex-col items-start justify-center text-start w-full sm:w-auto sm:max-w-xl">
-        <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white md:mb-2 max-w-xs md:max-w-125">
+      <div className="hero-signature mt-85 px-6 sm:px-0 sm:mt-0 sm:absolute sm:top-[70%] sm:left-8 md:left-20 md:transform md:-translate-y-1/2 flex flex-col items-start justify-center text-start w-full sm:w-auto sm:max-w-xl">
+        <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white md:mb-2 max-w-50 md:max-w-125">
           Our <span className="text-[#fe6200]">Signature</span> Creations
         </h2>
 
         <div className="flex gap-3 sm:gap-4 md:gap-6 mt-2 sm:mt-4 flex-wrap">
           <button
             onClick={() => handleRotate("prev")}
-            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all"
+            disabled={isRotating}
+            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             Prev Dish
           </button>
 
           <button
             onClick={() => handleRotate("next")}
-            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all"
+            disabled={isRotating}
+            className="px-4 sm:px-5 md:px-6 py-2 md:py-2 bg-[#fe6200] text-white rounded-full shadow-xl cursor-pointer text-xs sm:text-sm md:text-sm hover:shadow-lg hover:scale-105 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             Next Dish
           </button>
@@ -229,11 +268,20 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Dynamic Title & Description - Right Side */}
-      <div className="hero-title-desc px-6 sm:px-0 mt-8 sm:mt-0 sm:absolute sm:top-[70%] sm:right-8 md:right-20 sm:transform sm:-translate-y-1/2 sm:max-w-sm md:max-w-125 text-start md:text-end flex flex-col items-end justify-center z-40">
-        <h2 className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-2">
+      <div
+        className="hero-title-desc px-6 sm:px-0 mt-8 sm:mt-0 sm:absolute sm:top-[70%] sm:right-8 md:right-20 sm:transform sm:-translate-y-1/2 
+      w-full sm:max-w-sm md:max-w-125 text-start md:text-end flex flex-col items-end justify-center z-40"
+      >
+        <h2
+          ref={titleRef}
+          className="text-white max-w-80 sm:max-w-max text-lg sm:text-2xl md:text-3xl font-bold mb-2"
+        >
           {activeDish.title}
         </h2>
-        <p className="text-white text-xs sm:text-base md:text-lg line-clamp-4 md:line-clamp-none">
+        <p
+          ref={descRef}
+          className="text-white max-w-80 sm:max-w-max text-xs sm:text-base md:text-lg line-clamp-4 md:line-clamp-none"
+        >
           {activeDish.desc}
         </p>
       </div>

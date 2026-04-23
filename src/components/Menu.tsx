@@ -1,11 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import ArrowIcon from "./../assets/menu/arrow.svg?react";
 
 gsap.registerPlugin(ScrollToPlugin);
 import saladImage from "./../assets/menu/salad.webp";
-import sidesImage from "./../assets/menu/sides.webp";
 import appetizersImage from "./../assets/menu/appetizers.webp";
 import mainCoursesImage from "./../assets/menu/mainCourse.webp";
 import dessertsImage from "./../assets/menu/dessert.webp";
@@ -100,6 +98,44 @@ const Menu = () => {
   const [isClosing, setIsClosing] = useState(false);
   const menuChoicesWrapperRef = useRef<HTMLDivElement>(null);
 
+  // idle preloading + decode of all menu images on mount
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (callback: IdleRequestCallback) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+
+    const preloadAndDecode = async () => {
+      await Promise.all(
+        menuChoices.map((category) => {
+          const image = new Image();
+          image.src = category.img;
+          if (typeof image.decode === "function") {
+            return image.decode().catch(() => undefined);
+          }
+          return Promise.resolve();
+        }),
+      );
+    };
+
+    if (typeof win.requestIdleCallback === "function") {
+      const idleId = win.requestIdleCallback(() => {
+        void preloadAndDecode();
+      });
+
+      return () => {
+        if (typeof win.cancelIdleCallback === "function") {
+          win.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timeoutId = setTimeout(() => {
+      void preloadAndDecode();
+    }, 0);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   const selectItem = (category: MenuCategory | null) => {
     if (category === null) {
       setIsClosing(true);
@@ -161,9 +197,15 @@ const Menu = () => {
                 <img
                   src={category.img}
                   alt={category.name}
+                  loading="eager"
                   decoding="async"
-                  style={{ willChange: "opacity" }}
-                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 
+                  fetchPriority="high"
+                  draggable={false}
+                  style={{
+                    willChange: "opacity, transform",
+                    backfaceVisibility: "hidden",
+                  }}
+                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 pointer-events-none select-none transform-gpu
                   opacity-30 group-hover:opacity-100 ${isSelected ? "opacity-100" : ""}`}
                 />
 
