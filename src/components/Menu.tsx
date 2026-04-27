@@ -1,26 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
-gsap.registerPlugin(ScrollToPlugin);
+import { useEffect, useState } from "react";
 import saladImage from "./../assets/menu/salad.webp";
 import appetizersImage from "./../assets/menu/appetizers.webp";
 import mainCoursesImage from "./../assets/menu/mainCourse.webp";
 import dessertsImage from "./../assets/menu/dessert.webp";
 import beveragesImage from "./../assets/menu/beverages.webp";
+import bruschetta from "./../assets/menu/appetizers/bruschetta.jpg";
+import garlic from "./../assets/menu/appetizers/garlic.jpg";
+import mashrooms from "./../assets/menu/appetizers/mashrooms.jpg";
+import mozzarella from "./../assets/menu/appetizers/mozzarella.jpg";
 
 interface MenuItem {
   id: number;
   name: string;
   price: number;
   description?: string;
+  img: string;
 }
 
 interface MenuCategory {
   id: number;
   name: string;
   items: MenuItem[];
-  img: string;
 }
 
 const menuChoices: MenuCategory[] = [
@@ -28,23 +28,21 @@ const menuChoices: MenuCategory[] = [
     id: 1,
     name: "Appetizers",
     items: [
-      { id: 101, name: "Bruschetta", price: 8 },
-      { id: 102, name: "Stuffed Mushrooms", price: 10 },
-      { id: 103, name: "Mozzarella Sticks", price: 7 },
-      { id: 104, name: "Garlic Bread", price: 5 },
+      { id: 101, name: "Bruschetta", price: 8, description: "Grilled bread topped with fresh tomatoes, garlic, and basil.", img: bruschetta, },
+      { id: 102, name: "Stuffed Mushrooms", price: 10, description: "Grilled bread topped with fresh tomatoes, garlic, and basil.", img: mashrooms, },
+      { id: 103, name: "Mozzarella Sticks", price: 7, description: "Grilled bread topped with fresh tomatoes, garlic, and basil.", img: mozzarella, },
+      { id: 104, name: "Garlic Bread", price: 5, description: "Grilled bread topped with fresh tomatoes, garlic, and basil.", img: garlic, },
     ],
-    img: appetizersImage,
   },
   {
     id: 2,
     name: "Main Courses",
     items: [
-      { id: 201, name: "Grilled Salmon", price: 18 },
-      { id: 202, name: "Ribeye Steak", price: 25 },
-      { id: 203, name: "Chicken Alfredo", price: 15 },
-      { id: 204, name: "Vegetable Stir Fry", price: 12 },
+      { id: 201, name: "Grilled Salmon", price: 18, description: "Freshly grilled salmon served with a side of vegetables.", img: mainCoursesImage, },
+      { id: 202, name: "Ribeye Steak", price: 25, description: "Juicy ribeye steak cooked to perfection.", img: mainCoursesImage, },
+      { id: 203, name: "Chicken Alfredo", price: 15, description: "Creamy Alfredo sauce over tender chicken and pasta.", img: mainCoursesImage, },
+      { id: 204, name: "Vegetable Stir Fry", price: 12, description: "A mix of fresh vegetables stir-fried in a savory sauce.", img: mainCoursesImage, },
     ],
-    img: mainCoursesImage,
   },
   // {
   //   id: 3,
@@ -62,95 +60,36 @@ const menuChoices: MenuCategory[] = [
     id: 4,
     name: "Salads",
     items: [
-      { id: 401, name: "Caesar Salad", price: 9 },
-      { id: 402, name: "Greek Salad", price: 10 },
-      { id: 403, name: "Caprese Salad", price: 11 },
-      { id: 404, name: "Garden Salad", price: 8 },
+      { id: 401, name: "Caesar Salad", price: 9, description: "Crisp romaine lettuce with Caesar dressing, croutons, and Parmesan cheese.",  img: saladImage, },
+      { id: 402, name: "Greek Salad", price: 10, description: "A mix of fresh vegetables, feta cheese, and olives.", img: saladImage, },
+      { id: 403, name: "Caprese Salad", price: 11, description: "Fresh tomatoes, mozzarella, and basil drizzled with balsamic glaze.", img: saladImage, },
+      { id: 404, name: "Garden Salad", price: 8, description: "A variety of fresh garden vegetables with your choice of dressing.", img: saladImage, },
     ],
-    img: saladImage,
   },
   {
     id: 5,
     name: "Desserts",
     items: [
-      { id: 501, name: "Cheesecake", price: 7 },
-      { id: 502, name: "Chocolate Lava Cake", price: 8 },
+      { id: 501, name: "Cheesecake", price: 7, description: "Rich and creamy cheesecake with a graham cracker crust.", img: dessertsImage, },
+      { id: 502, name: "Chocolate Lava Cake", price: 8, description: "Warm chocolate cake with a gooey molten center.", img: dessertsImage, },
     ],
-    img: dessertsImage,
   },
   {
     id: 6,
     name: "Beverages",
     items: [
-      { id: 601, name: "Coffee", price: 3 },
-      { id: 602, name: "Tea", price: 2 },
-      { id: 603, name: "Soda", price: 2 },
-      { id: 604, name: "Wine", price: 10 },
-      { id: 605, name: "Beer", price: 5 },
-      { id: 606, name: "Cocktail", price: 12 },
+      { id: 601, name: "Coffee", price: 3, description: "Freshly brewed coffee.", img: beveragesImage, },
+      { id: 602, name: "Tea", price: 2, description: "A selection of fine teas.", img: beveragesImage, },
+      { id: 603, name: "Soda", price: 2, description: "Refreshing carbonated beverages.", img: beveragesImage, },
+      { id: 604, name: "Wine", price: 10, description: "A selection of fine wines.", img: beveragesImage, },
+      { id: 605, name: "Beer", price: 5, description: "A variety of craft and domestic beers.", img: beveragesImage, },
+      { id: 606, name: "Cocktail", price: 12, description: "Expertly crafted cocktails.", img: beveragesImage, },
     ],
-    img: beveragesImage,
   },
 ];
 
 const Menu = () => {
-  const [selected, setSelected] = useState<MenuCategory | null>(null);
-  const [isClosing, setIsClosing] = useState(false);
-  const menuChoicesWrapperRef = useRef<HTMLDivElement>(null);
-
-  // idle preloading + decode of all menu images on mount
-  useEffect(() => {
-    const win = window as Window & {
-      requestIdleCallback?: (callback: IdleRequestCallback) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-
-    const preloadAndDecode = async () => {
-      await Promise.all(
-        menuChoices.map((category) => {
-          const image = new Image();
-          image.src = category.img;
-          if (typeof image.decode === "function") {
-            return image.decode().catch(() => undefined);
-          }
-          return Promise.resolve();
-        }),
-      );
-    };
-
-    if (typeof win.requestIdleCallback === "function") {
-      const idleId = win.requestIdleCallback(() => {
-        void preloadAndDecode();
-      });
-
-      return () => {
-        if (typeof win.cancelIdleCallback === "function") {
-          win.cancelIdleCallback(idleId);
-        }
-      };
-    }
-
-    const timeoutId = setTimeout(() => {
-      void preloadAndDecode();
-    }, 0);
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  const selectItem = (category: MenuCategory | null) => {
-    if (category === null) {
-      setIsClosing(true);
-      setSelected(null);
-      setTimeout(() => setIsClosing(false), 800);
-    } else {
-      setIsClosing(false);
-      setSelected(category);
-      gsap.to(window, {
-        duration: 0.8,
-        scrollTo: { y: menuChoicesWrapperRef.current!, offsetY: 100 },
-        ease: "power2.inOut",
-      });
-    }
-  };
+  const [selected, setSelected] = useState<MenuCategory>(menuChoices[0]);
 
   return (
     <div className="py-14 sm:py-20 lg:py-28 bg-black/20 px-4 sm:px-6">
@@ -163,126 +102,54 @@ const Menu = () => {
         with quality ingredients to satisfy any craving.
       </p>
 
-      <div
-        className="min-h-96 sm:min-h-150 md:h-[calc(100vh-100px)] flex flex-col lg:flex-row 
-      w-full lg:w-[80vw] mx-auto gap-4 md:gap-0"
-      >
-        {/* Left: buttons column — full width by default, half width when selected on desktop */}
-        <div
-          ref={menuChoicesWrapperRef}
-          className={`flex flex-col transition-all duration-500 min-h-50 ${selected ? "delay-300" : "delay-0"} ${
-            selected ? "w-full lg:w-1/2" : "w-full"
-          }`}
-        >
-          {menuChoices.map((category) => {
-            const isSelected = selected && selected.id === category.id;
-            return (
-              <button
-                type="button"
-                key={category.id}
-                onClick={() =>
-                  selectItem(selected?.id === category.id ? null : category)
-                }
-                className={`basis-0 rounded-lg md:rounded-xl min-h-0 text-center px-3 sm:px-4 md:px-6 overflow-hidden transition-all duration-300 ${isClosing ? "delay-500" : ""}
-              bg-gray-400 border-black hover:bg-black hover:shadow-md group flex justify-center items-center cursor-pointer relative
-                ${
-                  isSelected
-                    ? "grow-2 py-2 sm:py-3 md:py-4 border opacity-100 bg-black" // 1. The Selected Item
-                    : selected
-                      ? "grow-0 h-0 py-0 border-0 opacity-0 pointer-events-none" // 2. The Unselected Items (Collapsed entirely)
-                      : "grow hover:grow-2@ py-2 sm:py-3 md:py-4 border opacity-100 min-h-16 md:min-h-20" // 3. The Default State (Nothing selected yet)
-                }`}
-              >
-                {/* Background image */}
-                <img
-                  src={category.img}
-                  alt={category.name}
-                  loading="eager"
-                  decoding="async"
-                  fetchPriority="high"
-                  draggable={false}
-                  style={{
-                    willChange: "opacity, transform",
-                    backfaceVisibility: "hidden",
-                  }}
-                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 pointer-events-none select-none transform-gpu
-                  opacity-30 group-hover:opacity-100 ${isSelected ? "opacity-100" : ""}`}
-                />
-
-                {/* Dark gradient overlay for text readability */}
-                <div
-                  className="absolute top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 group-hover:opacity-50"
-                  style={{
-                    background:
-                      "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.65) 100%)",
-                  }}
-                />
-
-                {/* <span
-                  className={`relative z-10 text-lg sm:text-xl md:text-2xl font-bold text-black ${isSelected ? "text-white" : "group-hover:text-white"} transition-colors duration-300`}
-                >
-                  ({category.items.length})
-                </span> */}
-
-                <h2
-                  className={`relative z-10 text-lg sm:text-2xl md:text-3xl font-bold tracking-wide
-                     text-black ${isSelected ? "text-white" : "group-hover:text-white group-hover:drop-shadow-md"} transition-colors duration-300`}
-                >
-                  {category.name}
-                </h2>
-
-                {/* <ArrowIcon
-                  className={`relative z-10 w-auto h-6 sm:h-7 md:h-8 transition-all duration-300 rotate-45 ${isSelected ? "text-white" : "group-hover:rotate-0"} text-black ${isSelected ? "" : "group-hover:text-white group-hover:drop-shadow-md"}`}
-                /> */}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Right: items panel — hidden by default, slides in when selected */}
-        <div
-          className={`relative flex flex-col justify-center gap-4 sm:gap-5 md:gap-6 overflow-y-auto bg-neutral-900 rounded-lg md:rounded-none transition-all duration-500 ${selected ? "delay-300" : "delay-0"} ${
-            selected
-              ? "w-full lg:w-1/2 opacity-100 px-4 sm:px-8 md:px-12 lg:px-16 py-6 md:py-8"
-              : "w-0 lg:w-0 opacity-0 px-0"
-          }`}
-        >
+      <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+        {menuChoices.map((category) => (
           <button
             type="button"
-            onClick={() => selectItem(null)}
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-8 text-white/50 hover:text-white text-2xl md:text-3xl transition-colors duration-200 cursor-pointer"
-            aria-label="Close"
+            key={category.id}
+            onClick={() => setSelected(category)}
+            className={`px-4 sm:px-6 py-2 text-sm sm:text-base rounded-full font-semibold cursor-pointer transition-colors duration-200 ${
+              selected.id === category.id
+                ? "text-white bg-[#fe6200]"
+                : "text-[#fe6200] bg-black/60 hover:bg-[#fe6200]/20"
+            } mb-0`}
+            aria-pressed={selected.id === category.id}
           >
-            ✕
+            {category.name}
           </button>
+        ))}
+      </div>
 
-          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3 md:mb-4 border-b border-white/20 pb-3 md:pb-4 whitespace-nowrap">
-            {selected?.name}
-          </h3>
-
-          <ul className="flex flex-col gap-3 sm:gap-4 md:gap-5">
-            {selected?.items.map((item) => (
-              <li
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-10 w-full">
+        {selected.items.map((item) => (
+            <div
                 key={item.id}
-                className="flex justify-between items-start md:items-center text-white border-b border-white/10 pb-3 md:pb-4 gap-4"
-              >
-                <div className="flex-1">
-                  <p className="text-base sm:text-lg md:text-xl font-semibold">
-                    {item.name}
-                  </p>
-                  {item.description && (
-                    <p className="text-xs sm:text-sm text-white/50 mt-1">
-                      {item.description}
-                    </p>
-                  )}
+                className="w-full sm:w-[calc(100%-20px)] lg:w-[calc(50%-40px)] max-w-150 bg-black/60 rounded-xl flex p-3 items-start justify-center gap-4 sm:h-36"
+            >   
+                <img
+                    src={item.img}
+                    alt={item.name}
+                    className="w-18 sm:w-30 h-18 sm:h-30 aspect-square object-cover rounded-xl"
+                />
+                
+                <div className="flex items-start justify-between w-full sm:mt-2">
+                    <div className="flex flex-col gap-3">
+                        <p className="text-white text-base sm:text-lg font-semibold">
+                            {item.name}
+                        </p>
+                        {item.description && (
+                            <p className="text-xs sm:text-sm text-white/60">
+                                {item.description}
+                            </p>
+                        )}
+                    </div>
+
+                    <span className="text-[#fe6200] text-base sm:text-xl font-bold shrink-0">
+                        ${item.price}
+                    </span>
                 </div>
-                <span className="text-base sm:text-lg md:text-lg font-bold text-white/80 shrink-0">
-                  ${item.price}
-                </span>
-              </li>
+            </div>
             ))}
-          </ul>
-        </div>
       </div>
     </div>
   );
